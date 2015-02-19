@@ -8,6 +8,8 @@ public class DBConnection {
 
     private static Connection sConnection;
 
+    // this is a new comment lololol 
+    
     public static Connection getInstance() throws ClassNotFoundException, SQLException {
         String host, db, user, password;
         

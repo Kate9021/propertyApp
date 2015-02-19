@@ -10,7 +10,7 @@ public class Model {
 
     private static Model instance = null;
 
-    public static /*synchronized*/ Model getInstance() {
+    public static /*synchronized thing*/ Model getInstance() {
         if (instance == null) {
             instance = new Model();
         }
