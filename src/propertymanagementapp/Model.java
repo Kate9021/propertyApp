@@ -2,6 +2,7 @@ package propertymanagementapp;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,11 +38,11 @@ public class Model {
     }
 
     public List<Property> getProperties() {
-        return this.properties;
+        return new ArrayList<Property>(this.properties);
     }
 
     public boolean addProperties(Property p) {
-        boolean result = false;
+        //boolean result = false;
         try {
             int id = this.gateway.insertProperty(
                     p.getAddress(), p.getType(),
@@ -50,20 +51,12 @@ public class Model {
                 p.setId(id);
                 this.properties.add(p);
                 result = true;
-            }        
-            
+            }  
         }
         catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(Model.class.getAddress()).log(Level.SEVERE, null, ex);
         }
-        return result;
     }
-    
-    //public boolean removeProperties(Property p) {
-      //  return this.properties.remove(p);
-    //}
-
-  
     
     public boolean removeProperties(Property p) {
         boolean removed = false;

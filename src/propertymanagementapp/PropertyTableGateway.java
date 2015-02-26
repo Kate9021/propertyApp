@@ -22,7 +22,7 @@ public class PropertyTableGateway {
         mConnection = connection;
     }
 
-    public int insertProperty(String n, String e, double m, int sn) throws SQLException {
+    public int insertProperty(String n, String g, double r, int m) throws SQLException {
         Property p = null;
 
         String query;       // the SQL query to execute
@@ -41,9 +41,9 @@ public class PropertyTableGateway {
         // create a PreparedStatement object to execute the query and insert the values into the query
         stmt = mConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, n);
-        stmt.setString(2, e);
-        stmt.setDouble(3, m);
-        stmt.setInt(4, sn);
+        stmt.setString(2, g);
+        stmt.setDouble(3, r);
+        stmt.setInt(4, m);
 
         //  execute the query and make sure that one and only one row was inserted into the database
         numRowsAffected = stmt.executeUpdate();
@@ -58,10 +58,6 @@ public class PropertyTableGateway {
         // return the id of the property created
         return id;
     }
-    
-    /*boolean deleteProperties(int id) {
-        
-    }*/
     
     boolean deleteProperties(int id)throws SQLException{
         String query;
@@ -78,7 +74,7 @@ public class PropertyTableGateway {
         
         return (numRowsAffected == 1);
     }
-    
+       
     public List<Property> getProperties() throws SQLException {
         String query;                   // the SQL query to execute
         Statement stmt;                 // the java.sql.Statement object used to execute the SQL query
