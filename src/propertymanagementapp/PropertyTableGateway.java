@@ -12,7 +12,7 @@ public class PropertyTableGateway {
     private static final String TABLE_NAME = "property";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_ADDRESS = "address";
-    private static final String COLUMN_TYPE = "type";
+    private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_RENT = "rent";
     private static final String COLUMN_BEDROOMS = "bedrooms";
 
@@ -33,7 +33,7 @@ public class PropertyTableGateway {
         // the required SQL INSERT statement with place holders for the values to be inserted into the database
         query = "INSERT INTO " + TABLE_NAME + " (" +
                 COLUMN_ADDRESS + ", " +
-                COLUMN_TYPE + ", " +
+                COLUMN_DESCRIPTION + ", " +
                 COLUMN_RENT + ", " +
                 COLUMN_BEDROOMS + ") "
                 + "VALUES (?, ?, ?, ?)";
@@ -65,7 +65,7 @@ public class PropertyTableGateway {
         int numRowsAffected;
         
         //the required SQL DELETE statement with place holders for the ID of the property
-        query = "DELETE FROM" + TABLE_NAME + "WHERE" + COLUMN_ID + " = ";
+        query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ? ";
         
         stmt = mConnection.prepareStatement(query);
         stmt.setInt(1,id);
@@ -82,7 +82,7 @@ public class PropertyTableGateway {
         List<Property> properties;   // the java.util.List containing the Property objects created for each row
                                         // in the result of the query the id of a programmer
 
-        String address, type;
+        String address, description;
         int id, bedrooms;
         double rent;
 
@@ -102,15 +102,53 @@ public class PropertyTableGateway {
         while (rs.next()) {
             id = rs.getInt(COLUMN_ID);
             address = rs.getString(COLUMN_ADDRESS);
-            type = rs.getString(COLUMN_TYPE);
+            description = rs.getString(COLUMN_DESCRIPTION);
             rent = rs.getDouble(COLUMN_RENT);
             bedrooms = rs.getInt(COLUMN_BEDROOMS);
 
-            p = new Property(id, address, type, rent, bedrooms);
+            p = new Property(id, address, description, rent, bedrooms);
             properties.add(p);
         }
 
         // return the list of Property objects retrieved
         return properties;
+    }
+
+    boolean updateProperty(Property p) throws SQLException {
+        String query;                   // the SQL query to execute
+        PreparedStatement stmt;         // the java.sql.PreparedStatement object used to execute the SQL query
+        int numRowsAffected;
+        //int aId;
+
+        // the required SQL INSERT statement with place holders for the values to be inserted into the database
+        query = "UPDATE " + TABLE_NAME + " SET " +
+                COLUMN_ADDRESS         + " = ?, " +
+                COLUMN_DESCRIPTION        + " = ?, " +
+                COLUMN_RENT      + " = ?, " +
+                COLUMN_BEDROOMS + " = ? " +
+                //COLUMN_MANAGER_ID   + " = ? " +
+                " WHERE " + COLUMN_ID + " = ?";
+
+        // create a PreparedStatement object to execute the query and insert the new values into the query
+        stmt = mConnection.prepareStatement(query);
+        stmt.setString(1, p.getAddress());
+        stmt.setString(2, p.getDescription());
+        stmt.setDouble(3, p.getRent());
+        stmt.setInt(4, p.getBedrooms());
+        stmt.setInt(5, p.getId() );
+        //aId = p.getManagerId();
+        //if (aId == -1) {
+        //    stmt.setNull(7, java.sql.Types.INTEGER);
+        //}
+        //else {
+        //    stmt.setInt(7, mId);
+        //}
+        //stmt.setInt(8, p.getId());
+
+        // execute the query
+        numRowsAffected = stmt.executeUpdate();
+
+        // return the true if one and only one row was updated in the database
+        return (numRowsAffected == 1);
     }
 }

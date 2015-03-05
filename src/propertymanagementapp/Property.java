@@ -4,21 +4,21 @@ public class Property {
 
     private int id;
     private String address;
-    private String type;
+    private String description;
     private double rent;
     private int bedrooms;
 
     public Property(int id, String n, String g, double r, int m) {
         this.id = id;
         this.address = n;
-        this.type = g;
+        this.description = g;
         this.rent = r;
         this.bedrooms = m;
     }
 
     public Property(String n, String g, double r, int m) {
         this.address = n;
-        this.type = g;
+        this.description = g;
         this.rent = r;
         this.bedrooms = m;
     }
@@ -39,12 +39,12 @@ public class Property {
         this.address = address;
     }
 
-    public String getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDescription(String type) {
+        this.description = type;
     }
 
     public double getRent() {

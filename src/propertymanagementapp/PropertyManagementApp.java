@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PropertyManagementApp {
-    private static String Line1;
-    private static String Line2;
 
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
@@ -31,7 +29,7 @@ public class PropertyManagementApp {
                 case 1: {
                     System.out.println("Creating property");
                     p = readProperty(keyboard);
-                    if (model.addProperties(p)){
+                    if (model.addProperty(p)){
                         System.out.println("Property added to database");
                     }
                     else{
@@ -42,26 +40,11 @@ public class PropertyManagementApp {
                 }
                 case 2: {
                     System.out.println("Editing property");
-                    updateProperties(keyboard, model);
+                    editProperty(keyboard, model);
                     break;
                 }
                 case 3: {
-                    System.out.println("Deleting property");
-                    System.out.println("Enter the properties ID to delete: ");
-                    int id = Integer.parseInt(keyboard.nextLine());
-                    
-                    p = model.findPropertyById(id);
-                    if (p != null) {
-                        if (model.removeProperties(p)) {
-                            System.out.println("Property deleted");
-                        }
-                        else{
-                            System.out.println("Property not deleted");
-                        }
-                    }
-                    else {
-                        System.out.println("Property not found");
-                    }
+                    deleteProperty(keyboard, model);
                     break; 
                 }
                 case 4: {
@@ -76,33 +59,33 @@ public class PropertyManagementApp {
     }
     
     private static Property readProperty(Scanner keyb) {
-        String address, type;
+        String address, description;
         int bedrooms;
         double rent;
         String line;
 
         address = getString(keyb, "Enter address: ");
-        type = getString(keyb, "Enter type: ");
+        description = getString(keyb, "Enter Description: ");
         line = getString(keyb, "Enter rent: ");
         rent = Double.parseDouble(line);
         line = getString(keyb, "Enter number of bedrooms: ");
         bedrooms = Integer.parseInt(line);
 
         Property p = 
-                new Property(address, type, rent, 
+                new Property(address, description, rent, 
                         bedrooms);
         
         return p;
     }
     
     private static void deleteProperty(Scanner keyboard, Model model) {
-        System.out.print("Enter the address of the property to delete:");
+        System.out.print("Enter the ID of the property to delete:");
         int id = Integer.parseInt(keyboard.nextLine());
         Property p;
 
         p = model.findPropertyById(id);
         if (p != null) {
-            if (model.removeProperties(p)) {
+            if (model.removeProperty(p)) {
                 System.out.println("Property deleted");
             }
             else {
@@ -127,12 +110,12 @@ public class PropertyManagementApp {
             System.out.println("There are no properties in the database. ");
         }
         else {
-            System.out.printf("%5s %20s %20s %10s %10s\n","id", "address", "type","rent", "bedrooms");
+            System.out.printf("%5s %20s %20s %10s %10s\n","id", "address", "description","rent", "bedrooms");
             for (Property pr : properties ) {
-                System.out.printf("%5d %20s %20s %.2f %10d\n",
+                System.out.printf("%5s %20s %20s %10s %10s\n",
                         pr.getId(),
                         pr.getAddress(),
-                        pr.getType(),
+                        pr.getDescription(),
                         pr.getRent(),
                         pr.getBedrooms());
             }
@@ -140,30 +123,49 @@ public class PropertyManagementApp {
         System.out.println();
     }
 
-    private static void updateProperties(Scanner keyboard, Model model, Property p) {
-String address, type;
+    private static void editProperty(Scanner kb, Model m) {
+        System.out.print("Enter the id of the property to edit:");
+        int id = Integer.parseInt(kb.nextLine());
+        Property p;
+
+        p = m.findPropertyById(id);
+        if (p != null) {
+            editPropertyDetails(kb, p);
+            if (m.updateProperty(p)) {
+                System.out.println("Property updated");
+            }
+            else {
+                System.out.println("Property not updated");
+            }
+        }
+        else {
+            System.out.println("Property not found");
+        }
+    }
+    
+    private static void editPropertyDetails(Scanner keyboard, Property p) {
+        String address, description;
         int bedrooms, id;
         double rent;
         String Line; 
         
         address = getString(keyboard, "Enter address of property[" + p.getAddress() + "]: ");
-        type = getString(keyboard, "Enter type of property[" + p.getType() + "]: ");
-        Line1 = getString(keyboard, "Enter rent[" + p.getRent() + "]: ");
-        Line2 = getString(keyboard, "Enter number of bedrooms[" + p.getBedrooms() + "]: ");
-        
+        description = getString(keyboard, "Enter description of property[" + p.getDescription() + "]: ");
+        String line1 = getString(keyboard, "Enter rent[" + p.getRent() + "]: ");
+        String line2 = getString(keyboard, "Enter number of bedrooms[" + p.getBedrooms() + "]: ");
         
         if (address.length() !=0){
             p.setAddress(address);
         }
-        if (type.length() !=0){
-            p.setType(type);
+        if (description.length() !=0){
+            p.setDescription(description);
         }
-        if (Line1.length() !=0){
-            rent = Double.parseDouble(Line1);
+        if (line1.length() !=0){
+            rent = Double.parseDouble(line1);
             p.setRent(rent);
         }
-        if (Line2.length() !=0){
-            bedrooms = Integer.parseInt(Line2);
+        if (line2.length() !=0){
+            bedrooms = Integer.parseInt(line2);
             p.setBedrooms(bedrooms);   
         }
     }

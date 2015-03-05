@@ -11,7 +11,7 @@ public class Model {
 
     private static Model instance = null;
 
-    public static /*synchronized*/ Model getInstance() {
+    public static synchronized Model getInstance() {
         if (instance == null) {
             instance = new Model();
         }
@@ -19,15 +19,15 @@ public class Model {
     }
 
     private List<Property> properties;
-    private PropertyTableGateway gateway;
+    private PropertyTableGateway propertyGateway;
 
     private Model() {
         
         try{
             Connection conn = DBConnection.getInstance();
-            this.gateway = new PropertyTableGateway(conn);
+            this.propertyGateway = new PropertyTableGateway(conn);
             
-            this.properties = this.gateway.getProperties();
+            this.properties = this.propertyGateway.getProperties();
         }
         catch (ClassNotFoundException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,11 +41,11 @@ public class Model {
         return new ArrayList<Property>(this.properties);
     }
 
-    public boolean addProperties(Property p) {
-        //boolean result = false;
+    public boolean addProperty(Property p) {
+        boolean result = false;
         try {
-            int id = this.gateway.insertProperty(
-                    p.getAddress(), p.getType(),
+            int id = this.propertyGateway.insertProperty(
+                    p.getAddress(), p.getDescription(),
                     p.getRent(), p.getBedrooms());
             if (id != -1){
                 p.setId(id);
@@ -54,15 +54,16 @@ public class Model {
             }  
         }
         catch (SQLException ex) {
-        Logger.getLogger(Model.class.getAddress()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return result;
     }
     
-    public boolean removeProperties(Property p) {
+    public boolean removeProperty(Property p) {
         boolean removed = false;
         
         try {
-            removed = this.gateway.deleteProperties(p.getId());
+            removed = this.propertyGateway.deleteProperties(p.getId());
             if (removed){
                 removed = this.properties.remove(p);
             }
@@ -92,11 +93,11 @@ public class Model {
         return p;
     }
     
-    boolean updateProperties(Property p) {
+    boolean updateProperty(Property p) {
         boolean updated = false;
         
         try{
-            updated = this.gateway.updateProperties(p);
+            updated = this.propertyGateway.updateProperty(p);
         }
         catch (SQLException ex){
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
