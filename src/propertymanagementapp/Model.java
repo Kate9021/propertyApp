@@ -19,7 +19,9 @@ public class Model {
     }
 
     private List<Property> properties;
+    private List<Area> areas;
     private PropertyTableGateway propertyGateway;
+    private AreaTableGateway areaGateway;
 
     private Model() {
         
@@ -104,5 +106,55 @@ public class Model {
         }
         return updated;
     }
-}
+    
+    public boolean addArea(Area a){
+        boolean result = false;
+        try {
+            int id = this.areaGateway.insertArea(a.getName(), a.getDescription(), a.getFacilities());
+            if(id != -1){
+                a.setId(id);
+                this.areas.add(a);
+                result = true;
+            }
+        }
+        catch (SQLException ex){
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+        public List<Area> getAreas() {
+           return this.areas;
+       }
+        
+        Area findAreaById(int id) {
+        Area a = null;
+        int i = 0;
+        boolean found = false;
+        while (i < this.areas.size() && !found) {
+            a = this.areas.get(i);
+            if (a.getId() == id) {
+                found = true;
+            } else {
+                i++;
+            }
+        }
+        if (!found) {
+            a = null;
+        }
+        return a;
+    }
+        
+    boolean updateArea(Area a) {
+        boolean updated = false;
 
+        try {
+            updated = this.areaGateway.updateArea(a);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return updated;
+    }
+}

@@ -5,15 +5,13 @@ public class Area {
     private int id;
     private String name;
     private String description;
-    private String facilities;
-    private int noOfProperties;    
+    private String facilities;    
     
-    public Area(int id, String n, String d, String f, int nP){
+    public Area(int id, String n, String d, String f){
         this.id = id;
         this.name = n;
         this.description = d;
         this.facilities = f;
-        this.noOfProperties = nP;
     }
 
     public int getId() {
@@ -47,15 +45,4 @@ public class Area {
     public void setFacilities(String facilities) {
         this.facilities = facilities;
     }
-
-    public int getNoOfProperties() {
-        return noOfProperties;
-    }
-
-    public void setNoOfProperties(int noOfProperties) {
-        this.noOfProperties = noOfProperties;
-    }
-    
-    
-    
 }

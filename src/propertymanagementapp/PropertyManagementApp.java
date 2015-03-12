@@ -147,7 +147,7 @@ public class PropertyManagementApp {
         String address, description;
         int bedrooms, id;
         double rent;
-        String Line; 
+        String line; 
         
         address = getString(keyboard, "Enter address of property[" + p.getAddress() + "]: ");
         description = getString(keyboard, "Enter description of property[" + p.getDescription() + "]: ");
