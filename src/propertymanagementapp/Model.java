@@ -157,4 +157,20 @@ public class Model {
 
         return updated;
     }
+    
+     public boolean removeArea(Area a) {
+        boolean removed = false;
+        
+        try {
+            removed = this.areaGateway.deleteArea(a.getId());
+            if (removed){
+                removed = this.areas.remove(a);
+            }
+        }
+        catch (SQLException ex){
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return removed;
+    }
 }

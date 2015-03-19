@@ -126,7 +126,7 @@ public class PropertyTableGateway {
                 COLUMN_DESCRIPTION        + " = ?, " +
                 COLUMN_RENT      + " = ?, " +
                 COLUMN_BEDROOMS + " = ? " +
-                //COLUMN_MANAGER_ID   + " = ? " +
+                //COLUMN_AREA_ID   + " = ? " +
                 " WHERE " + COLUMN_ID + " = ?";
 
         // create a PreparedStatement object to execute the query and insert the new values into the query
@@ -138,12 +138,12 @@ public class PropertyTableGateway {
         stmt.setInt(5, p.getId() );
         //aId = p.getManagerId();
         //if (aId == -1) {
-        //    stmt.setNull(7, java.sql.Types.INTEGER);
+        //    stmt.setNull(6, java.sql.Types.INTEGER);
         //}
         //else {
-        //    stmt.setInt(7, mId);
+        //    stmt.setInt(6, aId);
         //}
-        //stmt.setInt(8, p.getId());
+        //stmt.setInt(7, p.getId());
 
         // execute the query
         numRowsAffected = stmt.executeUpdate();

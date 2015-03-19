@@ -7,6 +7,7 @@ public class Property {
     private String description;
     private double rent;
     private int bedrooms;
+   // private int areaId;
 
     public Property(int id, String n, String g, double r, int m) {
         this.id = id;
@@ -14,6 +15,7 @@ public class Property {
         this.description = g;
         this.rent = r;
         this.bedrooms = m;
+        //this.areaId = aId;
     }
 
     public Property(String n, String g, double r, int m) {
@@ -21,6 +23,7 @@ public class Property {
         this.description = g;
         this.rent = r;
         this.bedrooms = m;
+        //this.areaId = aId;
     }
 
     public int getId() {
@@ -62,5 +65,13 @@ public class Property {
     public void setBedrooms(int bedrooms) {
         this.bedrooms = bedrooms;
     }
+    
+   /* public int getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(int areaId) {
+        this.areaId = areaId;
+    } */
 
 }
